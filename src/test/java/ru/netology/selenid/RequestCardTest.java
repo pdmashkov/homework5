@@ -14,24 +14,18 @@ import static com.codeborne.selenide.Selenide.$$;
 import static org.openqa.selenium.Keys.BACK_SPACE;
 
 public class RequestCardTest {
-    private String city;
-    private String name;
-    private String phone;
+    private DataGenerator.UserInfo userInfo;
 
     @BeforeEach
     public void setUp() {
         Selenide.open("http://localhost:9999");
 
-        DataGenerator.UserInfo user = DataGenerator.Registration.generateUser("ru");
-
-        this.city = user.getCity();
-        this.name = user.getName();
-        this.phone = user.getPhone();
+        userInfo = DataGenerator.Registration.generateUser("ru");
     }
 
     @Test
     public void shouldBeSuccessSendForm() {
-        $("[data-test-id='city'] input").setValue(city);
+        $("[data-test-id='city'] input").setValue(userInfo.getCity());
 
         SelenideElement dateElement = $("[data-test-id='date'] input");
 
@@ -42,8 +36,8 @@ public class RequestCardTest {
 
         dateElement.setValue(date);
 
-        $("[data-test-id='name'] input").setValue(name);
-        $("[data-test-id='phone'] input").setValue(phone);
+        $("[data-test-id='name'] input").setValue(userInfo.getName());
+        $("[data-test-id='phone'] input").setValue(userInfo.getPhone());
         $("[data-test-id='agreement']").click();
         $$("button").findBy(Condition.exactText("Запланировать")).click();
 
@@ -55,7 +49,7 @@ public class RequestCardTest {
 
     @Test
     public void shouldBeSuccessSendFormRePlan() {
-        $("[data-test-id='city'] input").setValue(city);
+        $("[data-test-id='city'] input").setValue(userInfo.getCity());
 
         SelenideElement dateElement = $("[data-test-id='date'] input");
 
@@ -66,8 +60,8 @@ public class RequestCardTest {
 
         dateElement.setValue(date);
 
-        $("[data-test-id='name'] input").setValue(name);
-        $("[data-test-id='phone'] input").setValue(phone);
+        $("[data-test-id='name'] input").setValue(userInfo.getName());
+        $("[data-test-id='phone'] input").setValue(userInfo.getPhone());
         $("[data-test-id='agreement']").click();
         $$("button").findBy(Condition.exactText("Запланировать")).click();
 
@@ -92,7 +86,7 @@ public class RequestCardTest {
 
     @Test
     public void shouldBeFailedWithBadCity() {
-        this.city = DataGenerator.generateCity("en");
+        String city = DataGenerator.generateCity("en");
 
         $("[data-test-id='city'] input").setValue(city);
 
@@ -105,8 +99,8 @@ public class RequestCardTest {
 
         dateElement.setValue(date);
 
-        $("[data-test-id='name'] input").setValue(name);
-        $("[data-test-id='phone'] input").setValue(phone);
+        $("[data-test-id='name'] input").setValue(userInfo.getName());
+        $("[data-test-id='phone'] input").setValue(userInfo.getPhone());
         $("[data-test-id='agreement']").click();
         $$("button").findBy(Condition.exactText("Запланировать")).click();
 
@@ -117,7 +111,7 @@ public class RequestCardTest {
 
     @Test
     public void shouldBeFailedWithBadDate() {
-        $("[data-test-id='city'] input").setValue(city);
+        $("[data-test-id='city'] input").setValue(userInfo.getCity());
 
         SelenideElement dateElement = $("[data-test-id='date'] input");
 
@@ -128,8 +122,8 @@ public class RequestCardTest {
 
         dateElement.setValue(date);
 
-        $("[data-test-id='name'] input").setValue(name);
-        $("[data-test-id='phone'] input").setValue(phone);
+        $("[data-test-id='name'] input").setValue(userInfo.getName());
+        $("[data-test-id='phone'] input").setValue(userInfo.getPhone());
         $("[data-test-id='agreement']").click();
         $$("button").findBy(Condition.exactText("Запланировать")).click();
 
@@ -140,7 +134,7 @@ public class RequestCardTest {
 
     @Test
     public void shouldBeFailedWithDateInThePast() {
-        $("[data-test-id='city'] input").setValue(city);
+        $("[data-test-id='city'] input").setValue(userInfo.getCity());
 
         SelenideElement dateElement = $("[data-test-id='date'] input");
 
@@ -151,8 +145,8 @@ public class RequestCardTest {
 
         dateElement.setValue(date);
 
-        $("[data-test-id='name'] input").setValue(name);
-        $("[data-test-id='phone'] input").setValue(phone);
+        $("[data-test-id='name'] input").setValue(userInfo.getName());
+        $("[data-test-id='phone'] input").setValue(userInfo.getPhone());
         $("[data-test-id='agreement']").click();
         $$("button").findBy(Condition.exactText("Запланировать")).click();
 
@@ -163,7 +157,7 @@ public class RequestCardTest {
 
     @Test
     public void shouldBeFailedWithBadName() {
-        $("[data-test-id='city'] input").setValue(city);
+        $("[data-test-id='city'] input").setValue(userInfo.getCity());
 
         SelenideElement dateElement = $("[data-test-id='date'] input");
 
@@ -174,10 +168,10 @@ public class RequestCardTest {
 
         dateElement.setValue(date);
 
-        this.name = DataGenerator.generateName("en");
+        String name = DataGenerator.generateName("en");
 
         $("[data-test-id='name'] input").setValue(name);
-        $("[data-test-id='phone'] input").setValue(phone);
+        $("[data-test-id='phone'] input").setValue(userInfo.getPhone());
         $("[data-test-id='agreement']").click();
         $$("button").findBy(Condition.exactText("Запланировать")).click();
 
@@ -188,7 +182,7 @@ public class RequestCardTest {
 
     @Test
     public void shouldBeFailedWithoutAgreement() {
-        $("[data-test-id='city'] input").setValue(city);
+        $("[data-test-id='city'] input").setValue(userInfo.getCity());
 
         SelenideElement dateElement = $("[data-test-id='date'] input");
 
@@ -199,8 +193,8 @@ public class RequestCardTest {
 
         dateElement.setValue(date);
 
-        $("[data-test-id='name'] input").setValue(name);
-        $("[data-test-id='phone'] input").setValue(phone);
+        $("[data-test-id='name'] input").setValue(userInfo.getName());
+        $("[data-test-id='phone'] input").setValue(userInfo.getPhone());
         $$("button").findBy(Condition.exactText("Запланировать")).click();
 
         $("[data-test-id='agreement'].input_invalid").shouldBe(Condition.visible);
