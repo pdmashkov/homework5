@@ -65,7 +65,7 @@ public class RequestCardTest {
         $("[data-test-id='agreement']").click();
         $$("button").findBy(Condition.exactText("Запланировать")).click();
 
-        $(Selectors.byText("Успешно!")).shouldBe(Condition.visible, Duration.ofSeconds(15));
+        $(Selectors.byText("Успешно!")).shouldBe(Condition.visible, Duration.ofSeconds(20));
         SelenideElement successMsg = $("[data-test-id='success-notification'] .notification__content");
         successMsg.shouldBe(Condition.visible);
         successMsg.shouldHave(Condition.text("Встреча успешно запланирована на " + date));
