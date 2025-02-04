@@ -4,6 +4,10 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selectors;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +19,11 @@ import static org.openqa.selenium.Keys.BACK_SPACE;
 
 public class RequestCardTest {
     private DataGenerator.UserInfo userInfo;
+
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
 
     @BeforeEach
     public void setUp() {
@@ -198,5 +207,10 @@ public class RequestCardTest {
         $$("button").findBy(Condition.exactText("Запланировать")).click();
 
         $("[data-test-id='agreement'].input_invalid").shouldBe(Condition.visible);
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
     }
 }
